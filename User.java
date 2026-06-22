@@ -1,32 +1,53 @@
-public class User {
-    String name;
-    String address;
-    String contactInfo;
-    Account account;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private String name;
+    private String address;
+    private String contactInfo;
+    private final Account account;
 
     public User(String name, String address, String contactInfo, Account account) {
-        this.name = name;
-        this.setAddress(address);
-        this.setContactInfo(contactInfo);
+        setName(name);
+        setAddress(address);
+        setContactInfo(contactInfo);
         this.account = account;
     }
+
     public String getName() {
         return name;
     }
 
-	public String getAddress() {
-		return address;
-	}
+    public void setName(String name) {
+        this.name = requireText(name, "Name");
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = requireText(address, "Address");
+    }
+
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = requireText(contactInfo, "Contact information");
+    }
+
     public Account getAccount() {
         return account;
     }
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getContactInfo() {
-		return contactInfo;
-	}
-	public void setContactInfo(String contactInfo) {
-		this.contactInfo = contactInfo;
-	}
+
+    private static String requireText(String value, String fieldName) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " is required.");
+        }
+
+        return value.trim();
+    }
 }
